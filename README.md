@@ -4,7 +4,7 @@ Real-time IoT energy dashboard for a campus: live meter ingestion, anomaly
 detection, actionable recommendations, cost/CO₂ tracking, building
 leaderboard, digital-twin heatmap, and peak-demand forecasting.
 
-![status](https://img.shields.io/badge/status-demo--ready-6FCF97)
+[![CI](https://github.com/zulkar94/Smart-Campus-Energy-Management/actions/workflows/ci.yml/badge.svg)](https://github.com/zulkar94/Smart-Campus-Energy-Management/actions/workflows/ci.yml)
 ![python](https://img.shields.io/badge/python-3.12-blue)
 ![license](https://img.shields.io/badge/license-MIT-lightgrey)
 

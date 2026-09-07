@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campus Energy — Control Room</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="app">
+
+  <aside class="rail">
+    <p class="brand">Campus Energy</p>
+    <p class="brand-sub"><span class="status-dot" id="conn-dot"></span><span id="conn-text">connecting…</span></p>
+
+    <p class="section-title">LEADERBOARD (VS BASELINE)</p>
+    <div id="leaderboard"><p class="empty">Loading…</p></div>
+  </aside>
+
+  <main class="stage">
+    <div class="kpi-row">
+      <div class="kpi"><div class="label">Energy (24h)</div><div class="value" id="kpi-kwh">–</div><span class="unit">kWh</span></div>
+      <div class="kpi"><div class="label">Cost (24h)</div><div class="value" id="kpi-cost">–</div><span class="unit">USD</span></div>
+      <div class="kpi"><div class="label">CO₂e (24h)</div><div class="value" id="kpi-co2">–</div><span class="unit">kg</span></div>
+      <div class="kpi"><div class="label">Peak demand</div><div class="value" id="kpi-peak">–</div><span class="unit">kW</span></div>
+    </div>
+
+    <div class="panel-block">
+      <p class="section-title">LIVE CAMPUS LOAD</p>
+      <canvas id="chart-canvas"></canvas>
+    </div>
+
+    <div class="panel-block">
+      <p class="section-title">DIGITAL TWIN — CURRENT LOAD INTENSITY</p>
+      <div class="heatmap-grid" id="heatmap"></div>
+    </div>
+  </main>
+
+  <aside class="rail">
+    <p class="section-title">LIVE ALERTS</p>
+    <div id="alerts"><p class="empty">No alerts yet.</p></div>
+  </aside>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

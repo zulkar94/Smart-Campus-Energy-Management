@@ -1,0 +1,61 @@
+version: "3.9"
+
+services:
+  db:
+    image: timescale/timescaledb:latest-pg16
+    environment:
+      POSTGRES_USER: campus
+      POSTGRES_PASSWORD: campus
+      POSTGRES_DB: campus_energy
+    ports: ["5432:5432"]
+    volumes: ["db_data:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U campus"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mqtt:
+    image: eclipse-mosquitto:2
+    ports: ["1883:1883"]
+    volumes: ["./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro"]
+
+  init-db:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    command: ["python", "-m", "scripts.init_db"]
+    environment:
+      DATABASE_URL: postgresql+asyncpg://campus:campus@db:5432/campus_energy
+    depends_on:
+      db: { condition: service_healthy }
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports: ["8000:8000"]
+    environment:
+      DATABASE_URL: postgresql+asyncpg://campus:campus@db:5432/campus_energy
+      MQTT_BROKER: mqtt
+    depends_on:
+      db: { condition: service_healthy }
+      init-db: { condition: service_completed_successfully }
+      mqtt: { condition: service_started }
+    restart: unless-stopped
+
+  simulator:
+    build:
+      context: .
+      dockerfile: Dockerfile.simulator
+    environment:
+      MQTT_BROKER: mqtt
+      SIM_SPEEDUP: "60"
+      PUBLISH_INTERVAL_SEC: "5"
+    depends_on:
+      mqtt: { condition: service_started }
+      backend: { condition: service_started }
+    restart: unless-stopped
+
+volumes:
+  db_data:
